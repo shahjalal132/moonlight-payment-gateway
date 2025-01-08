@@ -20,7 +20,7 @@ $security_key = get_option( 'security_key' );
             value="<?= $api_key ?>" required>
     </div>
     <div class="common-input-group mt-20">
-        <label for="api_key">Security Key</label>
+        <label for="security_key">Security Key</label>
         <input type="text" class="common-form-input" name="security_key" id="security_key" placeholder="Security Key"
             value="<?= $security_key ?>" required>
     </div>

@@ -25,8 +25,9 @@ class Admin_Sub_Menu {
 
     public function save_api_credentials() {
 
-        $api_url = sanitize_text_field( $_POST['api_url'] );
-        $api_key = sanitize_text_field( $_POST['api_key'] );
+        $api_url      = sanitize_text_field( $_POST['api_url'] );
+        $api_key      = sanitize_text_field( $_POST['api_key'] );
+        $security_key = sanitize_text_field( $_POST['security_key'] );
 
         if ( empty( $api_url ) || empty( $api_key ) ) {
             wp_send_json_error( 'An error occurred! Please fill all the fields.' );
@@ -34,6 +35,7 @@ class Admin_Sub_Menu {
 
         update_option( 'api_url', $api_url );
         update_option( 'api_key', $api_key );
+        update_option( 'security_key', $security_key );
 
         wp_send_json_success( 'Credentials saved successfully!' );
         die();
