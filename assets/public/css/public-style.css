@@ -12,6 +12,10 @@
   margin-bottom: 10px;
 }
 
-.mpg-card-input-field{
-    margin-left: 10px !important;
+.mpg-card-input-field {
+  margin-left: 10px !important;
+}
+
+#payment .payment_method_moonlight_gateway label img {
+  width: 30px !important;
 }
