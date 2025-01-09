@@ -21,6 +21,47 @@ class Admin_Sub_Menu {
         // save api credentials
         add_action( 'wp_ajax_save_credentials', [ $this, 'save_api_credentials' ] );
         add_action( 'wp_ajax_save_options', [ $this, 'save_options' ] );
+
+        // mpg_refund
+        add_action( 'wp_ajax_mpg_refund', [ $this, 'mpg_refund' ] );
+    }
+
+    public function mpg_refund() {
+
+        $transactionid = sanitize_text_field( $_POST['transaction_id'] );
+        $amount        = sanitize_text_field( $_POST['amount'] );
+        $security_key  = get_option( 'security_key' );
+        $api_url       = "https://moonlight.transactiongateway.com/api/transact.php";
+
+        $query = "";
+        // Login Information
+        $query .= "security_key=" . urlencode( $security_key ) . "&";
+        // Transaction Information
+        $query .= "transactionid=" . urlencode( $transactionid ) . "&";
+        if ( $amount > 0 ) {
+            $query .= "amount=" . urlencode( number_format( $amount, 2, ".", "" ) ) . "&";
+        }
+        $query .= "type=refund";
+
+        // send post request
+        $response = wp_remote_post( $api_url, [
+            'body'    => $query,
+            'timeout' => 60,
+        ] );
+
+        $this->put_program_logs( "Refund Response: " . json_encode( $response ) );
+
+        if ( is_wp_error( $response ) ) {
+            // wp_send_json_error( $response->get_error_message() );
+            wp_send_json_error( "Refund failed" );
+        }
+
+        $body = wp_remote_retrieve_body( $response );
+
+        if ( $body ) {
+            wp_send_json_success( "Refund successfully" );
+        }
+
     }
 
     public function save_api_credentials() {

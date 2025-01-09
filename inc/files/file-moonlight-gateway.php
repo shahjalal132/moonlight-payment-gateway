@@ -474,7 +474,8 @@ function moonlight_gateway_admin_order_data( $order ) {
     }
 
     // get order id
-    $order_id = $order->get_id();
+    $order_id    = $order->get_id();
+    $order_total = $order->get_total();
 
     // Get order meta data.
     $response_text      = get_post_meta( $order_id, '_mpg_response_text', true );
@@ -516,6 +517,23 @@ function moonlight_gateway_admin_order_data( $order ) {
                     <th><strong><?php // esc_html_e( 'Response Code', 'mpg' ); ?></strong></th>
                     <td>: <?php // echo esc_html( $response_code ); ?></td>
                 </tr> -->
+                <tr>
+                    <th><strong><?php esc_html_e( 'Refund', 'mpg' ); ?></strong></th>
+                    <td>: <button type="button" data-order-id="<?= esc_attr( $order_id ); ?>"
+                            data-transaction-id="<?= esc_attr( $transaction_id ); ?>"
+                            data-amount="<?= esc_attr( $order_total ); ?>" id="moonlight-gateway-refund"
+                            class="common-btn ">
+                            <span><?php esc_html_e( 'Refund', 'mpg' ); ?></span>
+                            <span class="refund-spinner-loader-wrapper"></span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <div id="toast-container"></div>
+                    </th>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>

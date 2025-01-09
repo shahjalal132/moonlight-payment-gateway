@@ -173,5 +173,59 @@
       });
     });
     // save options end
+
+    // refund process start
+    $("#moonlight-gateway-refund").click(function (e) {
+      e.preventDefault();
+
+      const refundSpinnerLoaderWrapper = $(".refund-spinner-loader-wrapper");
+      // add loading spinner
+      $(refundSpinnerLoaderWrapper).addClass("loader-spinner");
+
+      // Get transaction id and amount
+      const transactionId = $(this).data("transaction-id");
+      const amount = $(this).data("amount");
+
+      // send refund request
+      $.ajax({
+        type: "POST",
+        url: wpb_admin_localize.ajax_url,
+        data: {
+          action: "mpg_refund",
+          transaction_id: transactionId,
+          amount: amount,
+        },
+        success: function (response) {
+          // console.log(response);
+          // remove loading spinner
+          $(refundSpinnerLoaderWrapper).removeClass("loader-spinner");
+
+          if (response.success) {
+            showToast({
+              type: "success",
+              timeout: 5000,
+              title: `${response.data}`,
+            });
+          } else {
+            showToast({
+              type: "error",
+              timeout: 5000,
+              title: `${response.data}`,
+            });
+          }
+        },
+        error: function (xhr, status, error) {
+          // remove loading spinner
+          $(refundSpinnerLoaderWrapper).removeClass("loader-spinner");
+
+          showToast({
+            type: "error",
+            timeout: 5000,
+            title: `${response.data}`,
+          });
+        },
+      });
+    });
+    // refund process end
   });
 })(jQuery);

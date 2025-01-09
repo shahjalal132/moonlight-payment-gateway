@@ -34,7 +34,7 @@ class Enqueue_Assets {
     public function enqueue_admin_assets( $page_now ) {
 
         // $this->put_program_logs( 'Current Page: ' . $page_now );
-        if ( 'settings_page_moonlight-gateway' === $page_now ) {
+        if ( 'settings_page_moonlight-gateway' === $page_now || 'woocommerce_page_wc-orders' === $page_now ) {
 
             // enqueue admin css
             // wp_enqueue_style( "wpb-bootstrap", PLUGIN_ADMIN_ASSETS_DIR_URL . "/css/bootstrap.min.css", [], false, "all" );
