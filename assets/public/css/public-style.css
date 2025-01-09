@@ -1,1 +1,17 @@
-/* Public Styles CSS Codes */
+.mpg-test-card-credentials {
+  list-style: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mpg-mb-0 {
+  margin-bottom: 0;
+}
+
+.mpg-mb-10 {
+  margin-bottom: 10px;
+}
+
+.mpg-card-input-field{
+    margin-left: 10px !important;
+}
