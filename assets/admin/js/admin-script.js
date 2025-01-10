@@ -78,7 +78,8 @@
     $("#save_credentials").on("click", function () {
       const api_url = $("#api_url").val();
       const api_key = $("#api_key").val();
-      const security_key = $("#security_key").val();
+      const test_security_key = $("#test_security_key").val();
+      const live_security_key = $("#live_security_key").val();
 
       // add loading spinner
       const loader_button = $(".spinner-loader-wrapper");
@@ -91,7 +92,8 @@
           action: "save_credentials",
           api_url: api_url,
           api_key: api_key,
-          security_key: security_key,
+          test_security_key: test_security_key,
+          live_security_key: live_security_key,
         },
         success: function (response) {
           // remove loading spinner
