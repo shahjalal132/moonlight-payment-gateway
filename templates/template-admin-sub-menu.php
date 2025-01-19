@@ -1,6 +1,6 @@
 <!-- <h2 class="admin-menu-title">Admin Sub Menu Contents</h2> -->
 <div class="page-heading-title">
-    <h1>Moonlight Transaction Gateway Settings</h1>
+    <h1>Integrations Settings</h1>
 </div>
 
 <div class="tab-container">
