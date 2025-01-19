@@ -2,12 +2,12 @@
 
 /**
  *  
- * Plugin Name: Moonlight Payment Gateway
- * Plugin URI:  https://github.com/shahjalal132/moonlight-payment-gateway
+ * Plugin Name: NMI Gateway and Konnektive CRM Integrations
+ * Plugin URI:  https://github.com/shahjalal132/nmi-gateway-and-konnektive-crm-integrations
  * Author:      Sujon
  * Author URI:  https://github.com/mtmsujon
- * Description: Moonlight Payment Gateway.
- * Version:     1.0.0
+ * Description: NMI Gateway and Konnektive CRM Integrations.
+ * Version:     2.0.0
  * text-domain: mpg
  * Domain Path: /languages
  * 
