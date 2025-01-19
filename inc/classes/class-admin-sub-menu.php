@@ -15,7 +15,7 @@ class Admin_Sub_Menu {
     }
 
     public function setup_hooks() {
-        add_action( 'admin_menu', [ $this, 'register_admin_sub_menu' ] );
+        // add_action( 'admin_menu', [ $this, 'register_admin_sub_menu' ] );
         add_filter( 'plugin_action_links_' . PLUGIN_BASE_NAME, [ $this, 'add_plugin_action_links' ] );
 
         // save api credentials
@@ -93,7 +93,7 @@ class Admin_Sub_Menu {
     }
 
     function add_plugin_action_links( $links ) {
-        $settings_link = '<a href="admin.php?page=moonlight-gateway">' . __( 'Settings', 'mpg' ) . '</a>';
+        $settings_link = '<a href="admin.php?page=wc-settings&tab=checkout&section=nmi_konnektive">' . __( 'Settings', 'mpg' ) . '</a>';
         array_unshift( $links, $settings_link );
         return $links;
     }
@@ -101,10 +101,10 @@ class Admin_Sub_Menu {
     public function register_admin_sub_menu() {
         add_submenu_page(
             'options-general.php',
-            'Moonlight Gateway Settings',
-            'Moonlight Gateway Settings',
+            'NMI Konnektive Settings',
+            'NMI Konnektive Settings',
             'manage_options',
-            'moonlight-gateway',
+            'nmi_konnektive',
             [ $this, 'menu_callback_html' ],
         );
     }
