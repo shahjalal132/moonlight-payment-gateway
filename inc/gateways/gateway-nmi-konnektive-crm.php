@@ -11,7 +11,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
      */
     add_filter( 'woocommerce_payment_gateways', 'moonlight_payment_gateways' );
     function moonlight_payment_gateways( $gateways ) {
-        $gateways[] = 'NMI_Moonlight_Gateway';
+        $gateways[] = 'NMI_Konnektive_Gateway';
         return $gateways;
     }
 
@@ -21,23 +21,23 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
     add_action( 'plugins_loaded', 'nmi_moonlight_gateway_plugin_activation' );
     function nmi_moonlight_gateway_plugin_activation() {
 
-        class NMI_Moonlight_Gateway extends WC_Payment_Gateway {
+        class NMI_Konnektive_Gateway extends WC_Payment_Gateway {
 
             public function __construct() {
 
                 // Plugin base information
-                $this->id                 = 'nmi_moonlight_gateway'; // Unique ID for the payment gateway
+                $this->id                 = 'nmi_konnektive'; // Unique ID for the payment gateway
                 $this->icon               = PLUGIN_PUBLIC_ASSETS_URL . '/images/online-payment.png'; // Payment gateway icon
-                $this->method_title       = esc_html__( "Moonlight", "mpg" ); // Gateway title in admin panel
-                $this->method_description = esc_html__( "Moonlight Payment Gateway Options", "mpg" ); // Description in admin panel
+                $this->method_title       = esc_html__( "NMI Konnektive", "mpg" ); // Gateway title in admin panel
+                $this->method_description = esc_html__( "NMI Konnektive Payment Gateway Options", "mpg" ); // Description in admin panel
                 $this->has_fields         = true; // Set to true to display custom fields during checkout
 
                 // Load the settings
                 $this->init_settings();
 
                 // Retrieve gateway settings
-                $this->title       = $this->get_option( 'title', 'Moonlight Payment' ); // Payment title displayed to users
-                $this->description = $this->get_option( 'description', 'Moonlight Payment Gateway' ); // Description for users
+                $this->title       = $this->get_option( 'title', 'NMI Konnektive Payment' ); // Payment title displayed to users
+                $this->description = $this->get_option( 'description', 'NMI Konnektive Payment Gateway' ); // Description for users
                 $this->enabled     = $this->get_option( 'enabled' ); // Check if the gateway is enabled
                 $this->testmode    = 'yes' === $this->get_option( 'testmode' ); // Check if test mode is enabled
 
@@ -49,66 +49,51 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
             }
 
             /**
-             * Define Moonlight Gateway Options Fields
+             * Define NMI Konnektive Gateway Options Fields
              * Displayed in WooCommerce > Settings > Payment Methods
              */
             public function moonlight_gateway_options_fields() {
 
                 $this->form_fields = array(
-                    'testmode'          => array(
+                    'testmode'                => array(
                         'title'       => 'Test mode',
                         'label'       => 'Enable Test Mode',
                         'type'        => 'checkbox',
                         'description' => 'Place the payment gateway in test mode using test API keys.',
-                        'default'     => 'yes',
                         'desc_tip'    => true,
                     ),
-                    'enabled'           => array(
+                    'enabled'                 => array(
                         'title'       => 'Enable/Disable',
-                        'label'       => 'Enable Moonlight Gateway',
+                        'label'       => 'Enable NMI Konnektive Gateway',
                         'type'        => 'checkbox',
                         'description' => 'Set to "yes" to enable this payment gateway.',
                         'default'     => 'yes',
                         'desc_tip'    => true,
                     ),
-                    'title'             => array(
+                    'title'                   => array(
                         'title'       => 'Title',
                         'type'        => 'text',
                         'description' => 'This controls the title which the user sees during checkout.',
                         'desc_tip'    => true,
                     ),
-                    'description'       => array(
+                    'description'             => array(
                         'title'       => 'Description',
                         'type'        => 'textarea',
                         'description' => 'This controls the description which the user sees during checkout.',
                         'desc_tip'    => true,
                     ),
-                    'mpg_user_name'     => array(
-                        'title'       => 'User Name',
+                    'konnektive_api_login_id' => array(
                         'type'        => 'text',
-                        'description' => 'API Login User provided by the API provider.',
-                        'default'     => '',
+                        'title'       => 'Login ID',
+                        'description' => 'Konnektive API Login ID provided by the API provider.',
+                        'placeholder' => 'Enter Konnektive API Login ID',
                         'desc_tip'    => true,
                     ),
-                    'mpg_password'      => array(
+                    'konnektive_api_password' => array(
                         'title'       => 'Password',
                         'type'        => 'password',
                         'description' => 'API Login Password provided by the API provider.',
-                        'default'     => '',
-                        'desc_tip'    => true,
-                    ),
-                    'test_security_key' => array(
-                        'title'       => 'Test Security Key',
-                        'type'        => 'password',
-                        'description' => 'API Test Security Key provided by the API provider.',
-                        'default'     => '',
-                        'desc_tip'    => true,
-                    ),
-                    'live_security_key' => array(
-                        'title'       => 'Live Security Key',
-                        'type'        => 'password',
-                        'description' => 'API Live Security Key provided by the API provider.',
-                        'default'     => '',
+                        'placeholder' => 'Enter Konnektive API Password',
                         'desc_tip'    => true,
                     ),
                 );
@@ -252,8 +237,8 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
     /**
      * Admin Notice
      */
-    add_action( 'admin_notices', 'moonlight_gateway_admin_notice__error' );
-    function moonlight_gateway_admin_notice__error() {
+    add_action( 'admin_notices', 'nmi_konnektive_gateway_admin_notice__error' );
+    function nmi_konnektive_gateway_admin_notice__error() {
         ?>
         <div class="notice notice-error">
             <p><a href="http://wordpress.org/extend/plugins/woocommerce/"><?php esc_html_e( 'Woocommerce', 'mpg' ); ?></a>
@@ -265,8 +250,8 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
     /**
      * Deactivate Plugin
      */
-    add_action( 'admin_init', 'moonlight_gateway_deactivate' );
-    function moonlight_gateway_deactivate() {
+    add_action( 'admin_init', 'nmi_konnektive_gateway_deactivate' );
+    function nmi_konnektive_gateway_deactivate() {
         deactivate_plugins( plugin_basename( __FILE__ ) );
         unset( $_GET['activate'] );
     }
