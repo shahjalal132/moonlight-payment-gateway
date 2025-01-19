@@ -240,6 +240,11 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
                     wc_add_notice( __( 'Card details are required for payment.', 'woocommerce' ), 'error' );
                     return;
                 }
+
+                /**
+                 * TODO: get products ids, and campaign id from get_campaign_details.
+                 * TODO: populate `import order` endpoint and create a order to konnektive crm.
+                 */
             }
 
             // get campaign details
