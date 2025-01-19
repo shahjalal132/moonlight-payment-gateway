@@ -82,6 +82,18 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
                         'description' => 'This controls the description which the user sees during checkout.',
                         'desc_tip'    => true,
                     ),
+                    'nmi_konnektive_details'  => array(
+                        'title'       => 'API Credentials',
+                        'type'        => 'title',
+                        'description' => 'Konnektive API Credentials',
+                    ),
+                    'konnektive_api_base_url' => array(
+                        'type'        => 'text',
+                        'title'       => 'API Base Url',
+                        'description' => 'https://api.konnektive.com',
+                        'placeholder' => 'API Base Url',
+                        'default'     => 'https://api.konnektive.com',
+                    ),
                     'konnektive_api_login_id' => array(
                         'type'        => 'text',
                         'title'       => 'Login ID',
@@ -169,13 +181,13 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
                 // Get order data
                 $order = wc_get_order( $order_id );
 
-                // Determine the security key based on test mode
-                $security_key = $this->testmode
-                    ? $this->get_option( 'test_security_key' )
-                    : $this->get_option( 'live_security_key' );
+                // get konnektive api settings
+                $konnektive_api_base_url = $this->get_option( 'konnektive_api_base_url', 'https://api.konnektive.com' );
+                $konnektive_api_login_id = $this->get_option( 'konnektive_api_login_id' );
+                $konnektive_api_password = $this->get_option( 'konnektive_api_password' );
 
                 // Use the security key
-                if ( empty( $security_key ) ) {
+                if ( empty( $konnektive_api_login_id ) || empty( $konnektive_api_password ) ) {
                     throw new Exception( 'Security key is missing. Please check the payment gateway settings.' );
                 }
 
@@ -228,6 +240,47 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
                     wc_add_notice( __( 'Card details are required for payment.', 'woocommerce' ), 'error' );
                     return;
                 }
+            }
+
+            // get campaign details
+            public function get_campaign_details() {
+
+                // get api base url
+                $api_base_url            = $this->get_option( 'konnektive_api_base_url', 'https://api.konnektive.com' );
+                $konnektive_api_login_id = $this->get_option( 'konnektive_api_login_id' );
+                $konnektive_api_password = $this->get_option( 'konnektive_api_password' );
+
+                // prepare url
+                $url = sprintf( "%s/campaign/query/?loginId=%s&password=%s", $api_base_url, $konnektive_api_login_id, $konnektive_api_password );
+
+                // get campaign details
+                $campaigns = wp_remote_post( $url );
+                put_program_logs( "Campaign Response: " . json_encode( $campaigns ) );
+                update_option( 'konnektive_campaigns_response', $campaigns );
+
+                // get response body
+                $response_body = wp_remote_retrieve_body( $campaigns );
+                // decode response body
+                $response_body = json_decode( $response_body, true );
+
+                // if result is success
+                if ( 'SUCCESS' !== $response_body['result'] ) {
+                    // show error message
+                    wc_add_notice( $response_body['message'], 'error' );
+                    return false;
+                }
+
+                $campaign_data = $response_body['message']['data'];
+                // store campaign data to file
+                $file = PLUGIN_BASE_PATH . '/data/campaigns.json';
+                if ( file_exists( $file ) ) {
+                    file_put_contents( $file, json_encode( $campaign_data ) );
+                }
+                return [
+                    'status'  => true,
+                    'message' => 'Campaign details fetched successfully',
+                    'data'    => $campaign_data,
+                ];
             }
         }
 
